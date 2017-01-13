@@ -63,10 +63,36 @@ function runCalc() {
 	  		}
 	  	}
 
-	  	// Push the result to ourString. ie: " = 32".
+	  // Push the result to ourString. ie: " = 32".
       ourString.push(" = ");
       ourString.push(num1);
     */
+
+    if(ourString[1] === "+" && ourString[3] === "/") {
+		var num1 = parseInt(ourString[2])/parseInt(ourString[4]);
+		num1 = parseInt(ourString[0])+num1;
+	} else if(ourString[1] === "+" && ourString[3] === "*") {
+		var num1 = parseInt(ourString[2])*parseInt(ourString[4]);
+		num1 = parseInt(ourString[0])+num1;
+	} else if(ourString[1] === "-" && ourString[3] === "/") {
+		var num1 = parseInt(ourString[2])/parseInt(ourString[4]);
+		num1 = parseInt(ourString[0])-num1;
+	} else if(ourString[1] === "-" && ourString[3] === "*") {
+		var num1 = parseInt(ourString[2])*parseInt(ourString[4]);
+		num1 = parseInt(ourString[0])-num1;
+	} else {
+		for(n=0; n<a.length; n += 2) {
+		  		if(n === 0) {
+		  			var num1 = calculate(parseInt(parseInt(ourString[0])), ourString[0+1], parseInt(ourString[0+2]));
+		  		} else {
+		  			var num1 = calculate(num1, ourString[n+1], parseInt(ourString[n+2]));
+		  		}
+		  	}
+	}
+
+	// Push the result to ourString. ie: " = 32".
+  	ourString.push(" = ");
+  	ourString.push(num1);
 
 		// Once string is complete, we will make sure that it can't be in the holdResults array.
 		if(holdResults.indexOf(ourString.join("")) === -1 ) {
