@@ -32,7 +32,7 @@ function runCalc() {
   a.push($("#num2").val());
   a.push($("#num3").val());
   var countMatches = 0;
-	while(countMatches < 20000) {
+  while(countMatches < 20000) {
 	  var ourString = [];
 	  for(n=0; n<a.length; n++) {
 		  // Generate letter.
@@ -53,23 +53,50 @@ function runCalc() {
 		  }
 	  }
 
-	  // Perform calculations using proper order of operations.
-	  if((ourString[1] === "+" || ourString[1] === "-") && (ourString[3] === "/" || ourString[3] === "*")) {
-	  	var num1 = calculate(parseInt(ourString[2]), ourString[3], parseInt(ourString[4]));
-	  	num1 = calculate(parseInt(ourString[0]), ourString[1], num1);
-	  } else {
-	  	for(n=0; n<a.length; n += 2) {
-		  		if(n === 0) {
-		  			var num1 = calculate(parseInt(ourString[0]), ourString[0+1], parseInt(ourString[0+2]));
-		  		} else {
-		  			var num1 = calculate(num1, ourString[n+1], parseInt(ourString[n+2]));
-		  		}
-		  	}
-	  }
+		var c = [];
+		// Copy array
+		for(i=0; i<ourString.length; i++) {
+		  c[i] = ourString[i];
+		}
 
-	// Push the result to ourString. ie: " = 32".
-  	ourString.push(" = ");
-  	ourString.push(num1);
+		// Left to Right Multiplication and Division
+		for(i=0; i<c.length; i++) {
+		  if(c[i] === "*" || c[i] === "/") {
+  		    if(c[i] ==="*"){
+	  		    c[i] = parseInt(c[i-1])*parseInt(c[i+1]);
+	  		    c.splice(i-1,1);
+	  		    c.splice(i,1);
+	  		    i -= 1;
+		    } else if(c[i] === "/"){
+			    c[i] = parseInt(c[i-1])/parseInt(c[i+1]);
+	  		    c.splice(i-1,1);
+	  		    c.splice(i,1);
+	  		    i = 0;
+		    }
+		  }
+		}
+
+		// Left to Right Addition and Subtraction
+		for(i=0; i<c.length; i++) {
+		  if(c[i] === "+" || c[i] === "-") {
+		    if(c[i] === "+") {
+	  		    c[i] = parseInt(c[i-1])+parseInt(c[i+1]);
+	  		    c.splice(i-1,1);
+	  		    c.splice(i,1);
+	  		    i -=1;
+		    } else if(c[i] === "-") {
+			    c[i] = parseInt(c[i-1])-parseInt(c[i+1]);
+	  		    c.splice(i-1,1);
+	  		    c.splice(i,1);
+	  		    i = 0;
+		    }
+		  }
+		}
+
+		// Add the outcome to ourString
+		ourString.push(" = ");
+		ourString.push(c[0]);
+
 
 
 		// Once string is complete, we will make sure that it can't be in the holdResults array.
@@ -85,6 +112,7 @@ function runCalc() {
 	}
 }
 
+/* Uneeded now
 function calculate(num1, op, num2) {
 	switch(op) {
 		case "+":
@@ -99,3 +127,4 @@ function calculate(num1, op, num2) {
 			break;
 	}
 }
+*/
