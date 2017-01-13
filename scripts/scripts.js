@@ -6,23 +6,27 @@ var a = [];
 var b = ["+", "-", "/", "*"];
 var holdResults = [];
 var isMatch = true;
+var isBlank = false;
 	/* 
 	The countMatches variable below will increase by one each time an outcome has already been discovered so that we can stop the loop when it would be (assumed) statistically impossible to find that many consecutive matches. Example: If we find 20,000 matches in a row, odds are we have found every single possible outcome and can stop looking for more.
 	*/
 $("button").click(function(){
-  if($("#num1").val() === "" || $("#num2").val() === "" || $("#num3").val() === "") {
-    alert("Please do not leave a field blank.");
-  }
-  if($("#num1").val() != $("#num2").val() && $("#num1").val() != $("#num3").val() && $("#num2").val() != $("#num3").val()) {
+  $("input").each(function(){
+  	if(!$(this).val()) {
+  		isBlank = true;
+  	}
+  });
+  if(isBlank === false) {
       runCalc();
       $("#results-list").empty();
       for(i=0; i<holdResults.length; i++) {
         $("#results-list").append("<li>"+holdResults[i]+"</li>");
       }
       $("#total").html("("+holdResults.length+" total)");
-   } else {
-     alert("Please make sure you do not use duplicate numbers.");
-    }
+   } else if(isBlank) {
+   	alert("Please make sure do do not leave an input field empty.");
+   }
+   isBlank = false;
 });
 
 function runCalc() {
@@ -38,7 +42,14 @@ function runCalc() {
 		  // Generate letter.
 			do {
 			  	i = Math.round(Math.random()*(a.length-1 - 0)+0);
-				if(ourString.indexOf(a[i]) === -1) {
+			  	var numLimit = 0;
+			  	$("input").each(function(){
+			  		if($(this).val() === a[i]) {
+			  			numLimit += 1;
+			  		} 
+			  	});
+			  	var x = ourString.join(""); //ourString.split(a[i]).length-1;
+				if(x.split(a[i]).length-1 < numLimit) {
 					ourString.push(a[i]);
 					isMatch = false;
 				} else {
@@ -62,13 +73,13 @@ function runCalc() {
 		// Left to Right Multiplication and Division
 		for(i=0; i<c.length; i++) {
 		  if(c[i] === "*" || c[i] === "/") {
-  		    if(c[i] ==="*"){
-	  		    c[i] = parseInt(c[i-1])*parseInt(c[i+1]);
+  		    if(c[i] === "*"){
+	  		    c[i] = parseFloat(c[i-1])*parseFloat(c[i+1]);
 	  		    c.splice(i-1,1);
 	  		    c.splice(i,1);
-	  		    i -= 1;
+	  		    i = 0;
 		    } else if(c[i] === "/"){
-			    c[i] = parseInt(c[i-1])/parseInt(c[i+1]);
+			    c[i] = parseFloat(c[i-1])/parseFloat(c[i+1]);
 	  		    c.splice(i-1,1);
 	  		    c.splice(i,1);
 	  		    i = 0;
@@ -80,12 +91,12 @@ function runCalc() {
 		for(i=0; i<c.length; i++) {
 		  if(c[i] === "+" || c[i] === "-") {
 		    if(c[i] === "+") {
-	  		    c[i] = parseInt(c[i-1])+parseInt(c[i+1]);
+	  		    c[i] = parseFloat(c[i-1])+parseFloat(c[i+1]);
 	  		    c.splice(i-1,1);
 	  		    c.splice(i,1);
 	  		    i -=1;
 		    } else if(c[i] === "-") {
-			    c[i] = parseInt(c[i-1])-parseInt(c[i+1]);
+			    c[i] = parseFloat(c[i-1])-parseFloat(c[i+1]);
 	  		    c.splice(i-1,1);
 	  		    c.splice(i,1);
 	  		    i = 0;
