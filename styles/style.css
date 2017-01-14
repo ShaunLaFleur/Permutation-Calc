@@ -1,9 +1,9 @@
 div#inputs-container, div#results-div {
   border:2px solid black;
   text-align:center;
-  width: 80%;
+  width: 85%;
   margin: auto auto 10px auto;
-  min-width: 500px;
+  min-width: 600px;
 }
 
 div.input-div {
@@ -24,4 +24,10 @@ button {
 ul {
   list-style:none;
   margin: auto auto;
+}
+
+li {
+  background-color: #e6e6e6;
+  width: 200px;
+  margin: 10px auto 10px auto;
 }
