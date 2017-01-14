@@ -39,7 +39,8 @@ function runCalc() {
   while(countMatches < 20000) {
 	  var ourString = [];
 	  for(n=0; n<a.length; n++) {
-		  // Generate letter.
+
+		  	// Generate letter. 3 2 1 --> [3][+][2][-] ---> [[3]]
 			do {
 			  	i = Math.round(Math.random()*(a.length-1 - 0)+0);
 			  	var numLimit = 0;
@@ -48,8 +49,15 @@ function runCalc() {
 			  			numLimit += 1;
 			  		} 
 			  	});
-			  	var x = ourString.join(""); //ourString.split(a[i]).length-1;
-				if(x.split(a[i]).length-1 < numLimit) {
+
+			  	var x = 0;
+			  	for(j=0; j<ourString.length; j++) {
+			  		if(ourString[n] === a[i]) {
+			  			x += 1;
+			  		}
+			  	}
+			  	
+				if(x < numLimit) {
 					ourString.push(a[i]);
 					isMatch = false;
 				} else {
