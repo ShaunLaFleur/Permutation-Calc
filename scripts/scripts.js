@@ -40,24 +40,24 @@ function runCalc() {
 	  var ourString = [];
 	  for(n=0; n<a.length; n++) {
 
-		  	// Generate letter. 3 2 1 --> [3][+][2][-] ---> [[3]]
-			do {
+		  	// Generate letter. inputs= 1 2 3 --> array is [2][-][1][-] --> [2]
+		  		do {
 			  	i = Math.round(Math.random()*(a.length-1 - 0)+0);
 			  	var numLimit = 0;
 			  	$("input").each(function(){
 			  		if($(this).val() === a[i]) {
-			  			numLimit += 1;
+			  			numLimit += 1; // will be 1
 			  		} 
 			  	});
 
 			  	var x = 0;
 			  	for(j=0; j<ourString.length; j++) {
-			  		if(ourString[n] === a[i]) {
-			  			x += 1;
+			  		if(ourString[j] === a[i]) {
+			  			x += 1; // should be 1 since it's found once
 			  		}
 			  	}
 			  	
-				if(x < numLimit) {
+				if(x < numLimit) { // should not be able to push 2 since x === numLimit
 					ourString.push(a[i]);
 					isMatch = false;
 				} else {
