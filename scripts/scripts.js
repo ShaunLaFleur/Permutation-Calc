@@ -1,15 +1,11 @@
 /* A friend mentioned to me that he wondered what all of the possible combinations of a, b and c would be if we used addition, subtraction, division and multiplication on them. 
-
-To do: fix order of operations. This may require making the calculation non-flexible and only have it work for this specific case (3 number calculations).
 */
 var a = [];
 var b = ["+", "-", "/", "*"];
 var holdResults = [];
 var isMatch = true;
 var isBlank = false;
-	/* 
-	The countMatches variable below will increase by one each time an outcome has already been discovered so that we can stop the loop when it would be (assumed) statistically impossible to find that many consecutive matches. Example: If we find 20,000 matches in a row, odds are we have found every single possible outcome and can stop looking for more.
-	*/
+
 $("button").click(function(){
   $("input").each(function(){
   	if(!$(this).val()) {
@@ -30,47 +26,28 @@ $("button").click(function(){
 });
 
 function runCalc() {
-  holdResults = [];
-  a = [];
-  a.push($("#num1").val());
-  a.push($("#num2").val());
-  a.push($("#num3").val());
-  var countMatches = 0;
-  while(countMatches < 20000) {
-	  var ourString = [];
-	  for(n=0; n<a.length; n++) {
+  	holdResults = [];
+  	var countMatches = 0;
+  	var b = ["+", "-", "/", "*"];
+  	while(countMatches < 20000) {
+	  	a = [];
+		a.push($("#num1").val());
+		a.push($("#num2").val());
+		a.push($("#num3").val());
+		var limit = a.length;
+		var ourString = [];
+		for(n=0; n<limit; n++) {
+		  	// Generate letter.
+		  	var x = Math.round(Math.random()*(a.length-1 - 0)+0);
+		  	ourString.push(a[x]);
+		  	a.splice(x, 1);
 
-		  	// Generate letter. inputs= 1 2 3 --> array is [2][-][1][-] --> [2]
-		  		do {
-			  	i = Math.round(Math.random()*(a.length-1 - 0)+0);
-			  	var numLimit = 0;
-			  	$("input").each(function(){
-			  		if($(this).val() === a[i]) {
-			  			numLimit += 1; // will be 1
-			  		} 
-			  	});
-
-			  	var x = 0;
-			  	for(j=0; j<ourString.length; j++) {
-			  		if(ourString[j] === a[i]) {
-			  			x += 1; // should be 1 since it's found once
-			  		}
-			  	}
-			  	
-				if(x < numLimit) { // should not be able to push 2 since x === numLimit
-					ourString.push(a[i]);
-					isMatch = false;
-				} else {
-				  isMatch = true;
-				}
-			}while(isMatch);
-
-		  // Generate operator(+, -, *, /)
-		  if(n !== a.length-1) {
-	    	i = Math.round(Math.random()*(3 - 0)+0);
-	    	ourString.push(b[i]);
+			// Generate operator(+, -, *, /)
+			if(n !== limit-1) {
+		    	i = Math.round(Math.random()*(3 - 0)+0);
+		    	ourString.push(b[i]);
+			}
 		  }
-	  }
 
 		var c = [];
 		// Copy array
