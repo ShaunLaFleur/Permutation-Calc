@@ -1,28 +1,13 @@
-/* A friend mentioned to me that he wondered what all of the possible combinations of a, b and c would be if we used addition, subtraction, division and multiplication on them. 
-
-To do: fix order of operations. This may require making the calculation non-flexible and only have it work for this specific case (3 number calculations).
-*/
-var a = [];
-var b = ["+", "-", "/", "*"];
-var holdResults = [];
-var isMatch = true;
-var isBlank = false;
-	/* 
-	The countMatches variable below will increase by one each time an outcome has already been discovered so that we can stop the loop when it would be (assumed) statistically impossible to find that many consecutive matches. Example: If we find 20,000 matches in a row, odds are we have found every single possible outcome and can stop looking for more.
-	*/
+/* A friend mentioned to me that he wondered what all of the possible combinations of a, b and c would be if we used addition, subtraction, division and multiplication on them. */
 $("button").click(function(){
-  $("input").each(function(){
-  	if(!$(this).val()) {
-  		isBlank = true;
-  	}
+	var isBlank = false;  
+	$("input").each(function(){
+  		if(!$(this).val()) {
+  			isBlank = true;
+  		}
   });
   if(isBlank === false) {
       runCalc();
-      $("#results-list").empty();
-      for(i=0; i<holdResults.length; i++) {
-        $("#results-list").append("<li>"+holdResults[i]+"</li>");
-      }
-      $("#total").html("("+holdResults.length+" total)");
    } else if(isBlank) {
    	alert("Please make sure do do not leave an input field empty.");
    }
@@ -30,120 +15,94 @@ $("button").click(function(){
 });
 
 function runCalc() {
-  holdResults = [];
-  a = [];
-  a.push($("#num1").val());
-  a.push($("#num2").val());
-  a.push($("#num3").val());
-  var countMatches = 0;
-  while(countMatches < 20000) {
-	  var ourString = [];
-	  for(n=0; n<a.length; n++) {
+  	var holdResults = [];
+  	var found = [];
+  	var a = [];
+  	var countMatches = 0;
+  	var b = ["+", "-", "/", "*"];
+  	while(countMatches < 20000) {
+	  	a = [];
+		a.push($("#num1").val());
+		a.push($("#num2").val());
+		a.push($("#num3").val());
+		var limit = a.length;
+		var ourString = [];
+		for(n=0; n<limit; n++) {
+		  	// Generate letter.
+		  	var x = Math.round(Math.random()*(a.length-1 - 0)+0);
+		  	ourString.push(a[x]);
+		  	a.splice(x, 1);
 
-		  	// Generate letter. inputs= 1 2 3 --> array is [2][-][1][-] --> [2]
-		  		do {
-			  	i = Math.round(Math.random()*(a.length-1 - 0)+0);
-			  	var numLimit = 0;
-			  	$("input").each(function(){
-			  		if($(this).val() === a[i]) {
-			  			numLimit += 1; // will be 1
-			  		} 
-			  	});
-
-			  	var x = 0;
-			  	for(j=0; j<ourString.length; j++) {
-			  		if(ourString[j] === a[i]) {
-			  			x += 1; // should be 1 since it's found once
-			  		}
-			  	}
-			  	
-				if(x < numLimit) { // should not be able to push 2 since x === numLimit
-					ourString.push(a[i]);
-					isMatch = false;
-				} else {
-				  isMatch = true;
-				}
-			}while(isMatch);
-
-		  // Generate operator(+, -, *, /)
-		  if(n !== a.length-1) {
-	    	i = Math.round(Math.random()*(3 - 0)+0);
-	    	ourString.push(b[i]);
+			// Generate operator(+, -, *, /)
+			if(n !== limit-1) {
+		    	i = Math.round(Math.random()*(3 - 0)+0);
+		    	ourString.push(b[i]);
+			}
 		  }
-	  }
 
-		var c = [];
-		// Copy array
-		for(i=0; i<ourString.length; i++) {
-		  c[i] = ourString[i];
-		}
+		// If this result has not been discovered yet we will push it to the found array and then perform it's calculation.
+		if(found.indexOf(ourString.join("")) === -1) {
+			// Push to found
+			found.push(ourString.join(""));
+			// Copy array
+			var c = [];
+			for(i=0; i<ourString.length; i++) {
+				c[i] = ourString[i];
+			}
 
-		// Left to Right Multiplication and Division
-		for(i=0; i<c.length; i++) {
-		  if(c[i] === "*" || c[i] === "/") {
-  		    if(c[i] === "*"){
-	  		    c[i] = parseFloat(c[i-1])*parseFloat(c[i+1]);
-	  		    c.splice(i-1,1);
-	  		    c.splice(i,1);
-	  		    i = 0;
-		    } else if(c[i] === "/"){
-			    c[i] = parseFloat(c[i-1])/parseFloat(c[i+1]);
-	  		    c.splice(i-1,1);
-	  		    c.splice(i,1);
-	  		    i = 0;
-		    }
-		  }
-		}
+			//Perform calculations on the copy array
+			// Left to Right Multiplication and Division
+			for(i=0; i<c.length; i++) {
+			  if(c[i] === "*" || c[i] === "/") {
+				    if(c[i] === "*"){
+		  		    c[i] = parseFloat(c[i-1])*parseFloat(c[i+1]);
+		  		    c.splice(i-1,1);
+		  		    c.splice(i,1);
+		  		    i = 0;
+			    } else if(c[i] === "/"){
+				    c[i] = parseFloat(c[i-1])/parseFloat(c[i+1]);
+		  		    c.splice(i-1,1);
+		  		    c.splice(i,1);
+		  		    i = 0;
+			    }
+			  }
+			}
 
-		// Left to Right Addition and Subtraction
-		for(i=0; i<c.length; i++) {
-		  if(c[i] === "+" || c[i] === "-") {
-		    if(c[i] === "+") {
-	  		    c[i] = parseFloat(c[i-1])+parseFloat(c[i+1]);
-	  		    c.splice(i-1,1);
-	  		    c.splice(i,1);
-	  		    i -=1;
-		    } else if(c[i] === "-") {
-			    c[i] = parseFloat(c[i-1])-parseFloat(c[i+1]);
-	  		    c.splice(i-1,1);
-	  		    c.splice(i,1);
-	  		    i = 0;
-		    }
-		  }
-		}
+			// Left to Right Addition and Subtraction
+			for(i=0; i<c.length; i++) {
+			  if(c[i] === "+" || c[i] === "-") {
+			    if(c[i] === "+") {
+		  		    c[i] = parseFloat(c[i-1])+parseFloat(c[i+1]);
+		  		    c.splice(i-1,1);
+		  		    c.splice(i,1);
+		  		    i -=1;
+			    } else if(c[i] === "-") {
+				    c[i] = parseFloat(c[i-1])-parseFloat(c[i+1]);
+		  		    c.splice(i-1,1);
+		  		    c.splice(i,1);
+		  		    i = 0;
+			    }
+			  }
+			}
 
-		// Add the outcome to ourString
-		ourString.push(" = ");
-		ourString.push(c[0]);
+			// Add the outcome to ourString
+			ourString.push(" = ");
+			ourString.push(c[0]);
 
+			// Push our string to ourResults
+			holdResults.push(ourString.join(""));
 
-
-		// Once string is complete, we will make sure that it can't be in the holdResults array.
-		if(holdResults.indexOf(ourString.join("")) === -1 ) {
-			// Since ourString checks out we push it to the results array.
-			holdResults.push(ourString.join("")); 
-			// Rest the countMatches variable.
+			// Reset countMatches
 			countMatches = 0;
-			// Reset ourString
+		// Otherwise if it has been found already we will increment the countMatches array and skip running it's calculations.
 		} else {
 			countMatches += 1;
 		}
 	}
+	// Once we finish the while loop we will populate the page with the results that were found.
+	  $("#results-list").empty();
+      for(i=0; i<holdResults.length; i++) {
+        $("#results-list").append("<li>"+holdResults[i]+"</li>");
+      }
+      $("#total").html("("+holdResults.length+" total)");
 }
-
-/* Uneeded now
-function calculate(num1, op, num2) {
-	switch(op) {
-		case "+":
-			return num1 + num2;
-		case "-":
-			return num1 - num2;
-		case "*":
-			return num1 * num2;
-		case "/":
-			return num1 / num2;
-		default: 
-			break;
-	}
-}
-*/
