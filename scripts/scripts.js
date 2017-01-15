@@ -1,4 +1,12 @@
+<<<<<<< HEAD
 /* A friend mentioned to me that he wondered what all of the possible combinations of a, b and c would be if we used addition, subtraction, division and multiplication on them. */
+=======
+/* A friend mentioned to me that he wondered what all of the possible combinations of a, b and c would be if we used addition, subtraction, division and multiplication on them. 
+*/
+var holdResults = [];
+var isBlank = false;
+
+>>>>>>> origin/master
 $("button").click(function(){
 	var isBlank = false;  
 	$("input").each(function(){
@@ -15,6 +23,7 @@ $("button").click(function(){
 });
 
 function runCalc() {
+<<<<<<< HEAD
   	var holdResults = [];
   	var found = [];
   	var a = [];
@@ -22,6 +31,13 @@ function runCalc() {
   	var b = ["+", "-", "/", "*"];
   	while(countMatches < 20000) {
 	  	a = [];
+=======
+  	holdResults = [];
+  	var countMatches = 0;
+  	var b = ["+", "-", "/", "*"];
+  	while(countMatches < 20000) {
+	  	var a = [];
+>>>>>>> origin/master
 		a.push($("#num1").val());
 		a.push($("#num2").val());
 		a.push($("#num3").val());
@@ -99,9 +115,14 @@ function runCalc() {
 			countMatches += 1;
 		}
 	}
+<<<<<<< HEAD
 	// Once we finish the while loop we will populate the page with the results that were found.
 	  $("#results-list").empty();
       for(i=0; i<holdResults.length; i++) {
+=======
+	$("#results-list").empty();
+	for(i=0; i<holdResults.length; i++) {
+>>>>>>> origin/master
         $("#results-list").append("<li>"+holdResults[i]+"</li>");
       }
       $("#total").html("("+holdResults.length+" total)");
