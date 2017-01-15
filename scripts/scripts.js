@@ -1,9 +1,6 @@
 /* A friend mentioned to me that he wondered what all of the possible combinations of a, b and c would be if we used addition, subtraction, division and multiplication on them. 
 */
-var a = [];
-var b = ["+", "-", "/", "*"];
 var holdResults = [];
-var isMatch = true;
 var isBlank = false;
 
 $("button").click(function(){
@@ -14,11 +11,6 @@ $("button").click(function(){
   });
   if(isBlank === false) {
       runCalc();
-      $("#results-list").empty();
-      for(i=0; i<holdResults.length; i++) {
-        $("#results-list").append("<li>"+holdResults[i]+"</li>");
-      }
-      $("#total").html("("+holdResults.length+" total)");
    } else if(isBlank) {
    	alert("Please make sure do do not leave an input field empty.");
    }
@@ -30,7 +22,7 @@ function runCalc() {
   	var countMatches = 0;
   	var b = ["+", "-", "/", "*"];
   	while(countMatches < 20000) {
-	  	a = [];
+	  	var a = [];
 		a.push($("#num1").val());
 		a.push($("#num2").val());
 		a.push($("#num3").val());
@@ -106,21 +98,9 @@ function runCalc() {
 			countMatches += 1;
 		}
 	}
+	$("#results-list").empty();
+	for(i=0; i<holdResults.length; i++) {
+        $("#results-list").append("<li>"+holdResults[i]+"</li>");
+      }
+      $("#total").html("("+holdResults.length+" total)");
 }
-
-/* Uneeded now
-function calculate(num1, op, num2) {
-	switch(op) {
-		case "+":
-			return num1 + num2;
-		case "-":
-			return num1 - num2;
-		case "*":
-			return num1 * num2;
-		case "/":
-			return num1 / num2;
-		default: 
-			break;
-	}
-}
-*/
