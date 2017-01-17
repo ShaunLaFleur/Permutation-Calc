@@ -1,6 +1,5 @@
 /* A friend mentioned to me that he wondered what all of the possible combinations of a, b and c would be if we used addition, subtraction, division and multiplication on them. So I created this basic tool that does just that, performs all possible calculations using only those numbers. */
-var holdResults = [];
-var isBlank = false;
+
 $("button").click(function(){
 	var isBlank = false;  
 	$("input").each(function(){
