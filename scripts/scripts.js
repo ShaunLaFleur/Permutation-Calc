@@ -100,6 +100,7 @@ function runCalc() {
 			countMatches += 1;
 		}
 	}
+	// Once the while loop is complete we populate the results div with all of the found results.
 	$("#results-list").empty();
 	for(i=0; i<holdResults.length; i++) {
         $("#results-list").append("<li>"+holdResults[i]+"</li>");
