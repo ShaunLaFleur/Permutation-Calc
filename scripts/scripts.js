@@ -45,16 +45,13 @@ function runCalc() {
 			// Push to found
 			found.push(ourString.join(""));
 			// Copy array
-			var c = [];
-			for(i=0; i<ourString.length; i++) {
-				c[i] = ourString[i];
-			}
+			var c = ourString.slice();
 
 			//Perform calculations on the copy array
 			// Left to Right Multiplication and Division
 			for(i=0; i<c.length; i++) {
 			  if(c[i] === "*" || c[i] === "/") {
-				    if(c[i] === "*"){
+				if(c[i] === "*"){
 		  		    c[i] = parseFloat(c[i-1])*parseFloat(c[i+1]);
 		  		    c.splice(i-1,1);
 		  		    c.splice(i,1);
